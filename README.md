@@ -5,7 +5,7 @@
 <h1>Clutch Core<img src="https://github.com/Bumyy/Clutch-Core/blob/main/assets/icon.png" height="64" width="64" align="left" alt=""></h1><br>
 
 <b>A Clutch Core Plugin for PocketMine-MP made for AstralPvP before they closed off.</b><br>
-Made with ❤ by Bumy
+
 
 ## ✨ Features
 
@@ -20,3 +20,6 @@ Made with ❤ by Bumy
 - Add customization for the gamemode without editing the code
 - Add more type of hitting entities
 - Add more type of blocks
+
+
+<b>Made with ❤ by Bumy</b>
