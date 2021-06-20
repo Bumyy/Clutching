@@ -171,7 +171,7 @@ class Main extends PluginBase implements Listener {
                 break;
 
             case "§r§7Go back to hub":
-                $player->transfer("pvp.astralclient.net", 19132);
+                //$player->transfer("pvp.astralclient.net", 19132);
                 break;
 
             case "§r§7Spectate Somebody Else":
