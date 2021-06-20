@@ -3,6 +3,11 @@
 build-by-default: true
 branches:
 - main
-projects: []
+projects: 
+  Clutch-Core:
+    path: ""
+    icon: "/assets/icon.png"
+    lint:
+      phpstan: false
 ...
 
