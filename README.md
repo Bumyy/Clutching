@@ -6,6 +6,8 @@
 
 <b>A Clutch Core Plugin for PocketMine-MP made for AstralPvP before they closed off.</b><br>
 
+Video about the gamemode: https://youtu.be/IkpC1S8AKCQ
+
 
 ## ✨ Features
 
