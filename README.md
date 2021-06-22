@@ -1,6 +1,3 @@
-# Clutching Gamemode
-
-
 
 <h1>Clutching Gamemode<img src="https://github.com/Bumyy/Clutch-Core/blob/main/assets/icon.png" height="64" width="64" align="left" alt=""></h1><br>
 
