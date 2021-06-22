@@ -1,8 +1,8 @@
-# Clutch-Core
+# Clutching Gamemode
 
 
 
-<h1>Clutch Core<img src="https://github.com/Bumyy/Clutch-Core/blob/main/assets/icon.png" height="64" width="64" align="left" alt=""></h1><br>
+<h1>Clutching Gamemode<img src="https://github.com/Bumyy/Clutch-Core/blob/main/assets/icon.png" height="64" width="64" align="left" alt=""></h1><br>
 
 <b>A Clutch Core Plugin for PocketMine-MP made for AstralPvP before they closed off.</b><br>
 
