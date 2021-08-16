@@ -113,7 +113,7 @@ class Main extends PluginBase implements Listener {
      */
     public function onPlayerLeave(PlayerQuitEvent $event) : void{
         $player = $event->getPlayer();
-        $worlds = $this->getServer()->getLevelByName($player->getMap()."-".$p->getName()));
+        $worlds = $this->getServer()->getLevelByName($player->getMap()."-".$p->getName());
             if($worlds !== null){
             $p = $worlds->getPlayers();
             $pos = new Position(100, 52, 100, $this->getServer()->getLevelByName($p->getMap()."-".$p->getName()));
