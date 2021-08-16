@@ -24,7 +24,8 @@ class ArenaManager{
 
 	public $plugin;
 
-    public $maps = ["testMap1", "testMap1"];
+    //make this from config
+    public $maps = ["DefaultMap", "DefaultMap"];
 
 	public function __construct(Main $plugin){
         $this->plugin = $plugin;

@@ -57,6 +57,8 @@ class Main extends PluginBase implements Listener {
         $this->getServer()->getCommandMap()->registerAll("astral", [
             #new commands\Test("test", $this),
         ]);
+
+        $this->saveResource("DefaultMap.zip");
     }
 
     /**
@@ -97,6 +99,10 @@ class Main extends PluginBase implements Listener {
         $event->setJoinMessage("§r§d+§r§a $n");
     }
 
+    /**
+     * @param PlayerExhaustEvent $event
+     * @return void
+     */
     public function onExhaust(PlayerExhaustEvent $event){
         $event->setCancelled();
     }
@@ -118,13 +124,14 @@ class Main extends PluginBase implements Listener {
         //delete game and map
         $player->setInGame(false);
 
-        $p = $event->getPlayer();
-        $n = $p->getName();
-        $event->setQuitMessage("§r§c-§r§c $n");
         $this->deleteMap($player, $player->getMap());
 
     }
 
+    /**
+     * @param EntityDamageEvent $event
+     * @return void
+     */
     public function onEntityDamageEvent(EntityDamageEvent $event){
         //cancelling customnpc hit
         if($event instanceof EntityDamageByEntityEvent){
@@ -225,7 +232,7 @@ class Main extends PluginBase implements Listener {
 
     /**
      * @param CustomPlayer $player
-     * @param $folderName
+     * @param string $folderName
      * @return void
      */
     public function createMap(CustomPlayer $player, $folderName){
@@ -253,7 +260,7 @@ class Main extends PluginBase implements Listener {
     
     /**
      * @param CustomPlayer $player
-     * @param $folderName
+     * @param string $folderName
      * @return void
      */            
     public function deleteMap(CustomPlayer $player, $folderName) : void{
