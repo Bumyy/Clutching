@@ -14,11 +14,11 @@ Video about the gamemode: https://youtu.be/IkpC1S8AKCQ
 - Game Starter and Stoper! ✔
 - Working Spectator System to check your friends' progress! ✔
 - Settings for Knockback, Hit Delay and Hit Amount! ✔
+- Editable Back to Hub Ip ✔
+- A lot of Customizations for the Gamemode in Config ✔
 
 ## 📝 Todo List
 
-- Add Go Back To Hub IP editor
-- Add customization for the gamemode without editing the code
 - Add more type of hitting entities
 - Add more type of blocks
 
