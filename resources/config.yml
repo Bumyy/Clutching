@@ -1,0 +1,51 @@
+---
+
+# IMPORTANT: You need to restart the server for this to work
+
+backToHub:
+  # The ip the player going to be transfered back 
+  # when interacted with the "Go Back to Hub" item
+  ip: "ectary.club"
+  port: 19132
+  # You can disable this feature by putting true here
+  disabled: false
+
+# Allowing players to spectate others
+canSpectate: true
+
+# Add a coma and type out the name of your map
+# Add the maps .zip file in the plugin_data\Clutching folder
+maps: ["DefaultMap"]
+
+# The settings menu's values
+
+# min Means the smallest value of the setting
+# max Means the highest value of the setting
+# valuePerStep Means the value which between each step
+# default Means the default value set before the player modifies it
+
+# Default Settings Example: 1, 2, 3, 4, 5 ... 18, 19, 20
+
+gameSettingsValues:
+  # The value of how much knockback you will take
+  knockback: 
+    min: 1
+    max: 20
+    valuePerStep: 1
+    default: 4
+
+  # Delay between hits in tick (1s = 20 ticks)
+  hitDelay: 
+    min: 1
+    max: 10
+    valuePerStep: 1
+    default: 10
+
+  # The amount the bot will hit you in a row
+  hitAmount: 
+    min: 1
+    max: 10
+    valuePerStep: 1
+    default: 2
+
+...

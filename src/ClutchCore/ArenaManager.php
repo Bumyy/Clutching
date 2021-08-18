@@ -24,11 +24,14 @@ class ArenaManager{
 
 	public $plugin;
 
-    //make this from config
-    public $maps = ["DefaultMap", "DefaultMap"];
+    public $maps;
 
 	public function __construct(Main $plugin){
         $this->plugin = $plugin;
+        $this->maps = $this->plugin->config["maps"];
+        if(count($this->maps) == 1){
+            array_push($this->maps, $this->maps[0]);
+        }
     }
 
     public function createGame(CustomPlayer $player){
@@ -55,9 +58,14 @@ class ArenaManager{
     	switch($phase){
     		case "stopped":
                 $inv->setItem(0, Item::get(267, 0, 1)->setCustomName("§r§7Start the Game"));
-                $inv->setItem(3, Item::get(345, 0, 1)->setCustomName("§r§7Spectate"));
+                if($this->plugin->config["canSpectate"]){
+                    $inv->setItem(3, Item::get(345, 0, 1)->setCustomName("§r§7Spectate"));
+                }
                 $inv->setItem(4, Item::get(347, 0, 1)->setCustomName("§r§7Settings"));
-                $inv->setItem(5, Item::get(351, 1, 1)->setCustomName("§r§7Go back to hub"));
+                if($this->plugin->config["backToHub"]["disabled"] == false){
+                    $inv->setItem(5, Item::get(351, 1, 1)->setCustomName("§r§7Go back to hub"));
+                }
+                
     			break;
 
     		case "game":
@@ -69,7 +77,9 @@ class ArenaManager{
             case "spectating":
                 $inv->setItem(3, Item::get(345, 0, 1)->setCustomName("§r§7Spectate Somebody Else"));
                 $inv->setItem(4, Item::get(267, 0, 1)->setCustomName("§r§7Go back to your island"));
-                $inv->setItem(5, Item::get(351, 1, 1)->setCustomName("§r§7Go back to hub"));
+                if($this->plugin->config["backToHub"]["disabled"] == false){
+                    $inv->setItem(5, Item::get(351, 1, 1)->setCustomName("§r§7Go back to hub"));
+                }
                 break;
     	}
     }
@@ -147,9 +157,9 @@ class ArenaManager{
         });
         $form->setTitle("§8SETTINGS");
         //$form->addContent("§7Feel free to edit your training!\n\n§8Default Settings:\n§8Knockback 4\n§8Hit Delay 5");
-        $form->addSlider("Knockback", 1, 20, 1, (int)$player->getSettings("kb"));
-        $form->addSlider("Hit Delay (ticks)", 1, 10, 1, (int)$player->getSettings("hitdelay"));
-        $form->addSlider("Hit Amount", 1, 10, 1, (int)$player->getSettings("hitamount"));
+        $form->addSlider("Knockback", $this->plugin->config["gameSettingsValues"]["knockback"]["min"], $this->plugin->config["gameSettingsValues"]["knockback"]["max"], $this->plugin->config["gameSettingsValues"]["knockback"]["valuePerStep"], (int)$player->getSettings("kb"));
+        $form->addSlider("Hit Delay (ticks)", $this->plugin->config["gameSettingsValues"]["hitDelay"]["min"], $this->plugin->config["gameSettingsValues"]["hitDelay"]["max"], $this->plugin->config["gameSettingsValues"]["hitDelay"]["valuePerStep"], (int)$player->getSettings("hitdelay"));
+        $form->addSlider("Hit Amount", $this->plugin->config["gameSettingsValues"]["hitAmount"]["min"], $this->plugin->config["gameSettingsValues"]["hitAmount"]["max"], $this->plugin->config["gameSettingsValues"]["hitAmount"]["valuePerStep"], (int)$player->getSettings("hitamount"));
 
         $form->sendToPlayer($player);
     }

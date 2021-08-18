@@ -24,6 +24,7 @@ use pocketmine\Server;
 use pocketmine\Player;
 use pocketmine\entity\Entity;
 use pocketmine\level\Position;
+use pocketmine\utils\Config;
 
 use ClutchCore\CustomPlayer;
 use ClutchCore\ArenaManager;
@@ -36,7 +37,23 @@ class Main extends PluginBase implements Listener {
 
     public $arenaManager;
 
+    public $config;
+
     public function onEnable() {
+
+        if (is_null($this->getServer()->getPluginManager()->getPlugin("FormAPI"))) {
+            $this->getLogger()->error("You need to have FormAPI installed to use this plugin!");
+            $this->getServer()->getPluginManager()->disablePlugin($this);
+            return;
+        }
+
+        $this->saveResource("DefaultMap.zip");
+
+        if(!is_file($this->getDataFolder() . "/config.yml")) {
+            $this->saveResource("/config.yml");
+        }
+
+        $this->config = (new Config($this->getDataFolder() . "/config.yml", Config::YAML))->getAll();
 
         $this->getServer()->getPluginManager()->registerEvents($this, $this);
 
@@ -58,7 +75,6 @@ class Main extends PluginBase implements Listener {
             #new commands\Test("test", $this),
         ]);
 
-        $this->saveResource("DefaultMap.zip");
     }
 
     /**
@@ -85,18 +101,11 @@ class Main extends PluginBase implements Listener {
      * @return void
      */
     public function onPlayerJoin(PlayerJoinEvent $event) : void{
-        $player = $event->getPlayer();// ready
+        $player = $event->getPlayer();
         $player->load($this);
         $this->getArenaManager()->createGame($player);
-        $event->setJoinMessage("");
-        $player->sendMessage("§7Welcome to Clutch Practice!\nJoin our discord: https://astralclient.net/discord/");
         $this->getArenaManager()->giveItems($player, "stopped");
         $player->setGamemode(0);
-
-
-        $p = $event->getPlayer();
-        $n = $p->getName();
-        $event->setJoinMessage("§r§d+§r§a $n");
     }
 
     /**
@@ -178,12 +187,16 @@ class Main extends PluginBase implements Listener {
                 break;
 
             case "§r§7Go back to hub":
-                //$player->transfer("pvp.astralclient.net", 19132);
+                if($this->config["backToHub"]["disabled"] == false){
+                    $player->transfer($this->config["backToHub"]["ip"], $this->config["backToHub"]["port"]);
+                }
                 break;
 
             case "§r§7Spectate Somebody Else":
             case "§r§7Spectate":
-                $this->getArenaManager()->openSpectatingList($player);
+                if($this->config["canSpectate"]){
+                    $this->getArenaManager()->openSpectatingList($player);
+                }
                 break;
 
             case "§r§7Go back to your island":

@@ -21,7 +21,7 @@ class CustomPlayer extends Player {
     public $hitSession = 0;
     public $map;
 
-    public $settings = ["kb" => 4, "hitdelay" => 10, "hitamount" => 2];
+    public $settings = ["kb" => 1, "hitdelay" => 1, "hitamount" => 1];
 
     public $spectating = false;
 
@@ -34,6 +34,11 @@ class CustomPlayer extends Player {
 	public function load(Main $main) : void {
 		$this->plugin = $main;
         //create hitting npc
+        $this->settings["kb"] = $this->plugin->config["gameSettingsValues"]["knockback"]["default"];
+
+        $this->settings["hitdelay"] = $this->plugin->config["gameSettingsValues"]["hitDelay"]["default"];
+
+        $this->settings["hitamount"] = $this->plugin->config["gameSettingsValues"]["hitAmount"]["default"];
         
 	}
 
