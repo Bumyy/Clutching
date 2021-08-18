@@ -5,7 +5,7 @@
 
 Video about the gamemode: https://youtu.be/IkpC1S8AKCQ
 
-IMPORTANT: YOU NEED FORMAPI FOR THIS TO WORK (https://github.com/jojoe77777/FormAPI)
+<b>IMPORTANT:<b> YOU NEED FORMAPI FOR THIS TO WORK (https://github.com/jojoe77777/FormAPI)
 
 
 ## ✨ Features
