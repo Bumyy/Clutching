@@ -5,8 +5,8 @@
 
 Video about the gamemode: https://youtu.be/IkpC1S8AKCQ
 
-<b>IMPORTANT:<b> YOU NEED FORMAPI FOR THIS TO WORK (https://github.com/jojoe77777/FormAPI)
-
+## ❗️ IMPORTANT
+- You need FormAPI in your server for this plugin to work (https://github.com/jojoe77777/FormAPI)
 
 ## ✨ Features
 
