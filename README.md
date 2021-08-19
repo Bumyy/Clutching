@@ -14,7 +14,7 @@ Video about the gamemode: https://youtu.be/IkpC1S8AKCQ
 
 ## ❗️ IMPORTANT
 
-- You need FormAPI in your server for this plugin to work (https://github.com/jojoe77777/FormAPI)
+- You need libFormAPI virion in your server for this plugin to work (https://poggit.pmmp.io/ci/jojoe77777/FormAPI/libFormAPI)
 
 ## ✨ Features
 
