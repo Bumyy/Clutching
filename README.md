@@ -1,11 +1,19 @@
 
 <h1>Clutching Gamemode<img src="https://github.com/Bumyy/Clutch-Core/blob/main/assets/icon.png" height="64" width="64" align="left" alt=""></h1><br>
 
-<b>A Clutching Plugin for PocketMine-MP made for AstralPvP before they closed off.</b><br>
+<b>A Clutching Gamemode for PocketMine-MP.</b><br>
+
+## 😎 About the Gamemode:
+
+In Clutching you can practice your clutch skills!
+
+Simulate the situation of being knocked off
+the platform and try to save yourself by placing blocks under you!
 
 Video about the gamemode: https://youtu.be/IkpC1S8AKCQ
 
 ## ❗️ IMPORTANT
+
 - You need FormAPI in your server for this plugin to work (https://github.com/jojoe77777/FormAPI)
 
 ## ✨ Features
