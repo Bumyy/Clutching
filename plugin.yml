@@ -1,5 +1,5 @@
-name: ClutchCore
-main: ClutchCore\Main
+name: Clutching
+main: Bumy\Clutching\Main
 author: Bumy
 version: 1.1.0
 api: 

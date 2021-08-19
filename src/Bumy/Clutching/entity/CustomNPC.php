@@ -2,11 +2,10 @@
 
 declare(strict_types=1);
 
-namespace ClutchCore;
+namespace Bumy\Clutching\entity;
 
 use pocketmine\Player;
 use pocketmine\entity\Living;
-use ClutchCore\CustomPlayer;
 use pocketmine\nbt\tag\CompoundTag;
 use pocketmine\entity\DataPropertyManager;
 use pocketmine\entity\AttributeMap;
@@ -19,12 +18,6 @@ class CustomNPC extends Living {
     public $player;
 
     public const NETWORK_ID = 91;
-
-    /**
-     * @param Main $main
-     * @param CustomPlayer $player
-     * @return void
-     */
 
     public function __construct(Level $level, CompoundTag $nbt){
         $this->width = 0.01;
@@ -53,7 +46,7 @@ class CustomNPC extends Living {
         return "CustomNPC";
     }
 
-    public function setPlayer(CustomPlayer $player) : void{
+    public function setPlayer(Player $player) : void{
         $this->player = $player;
     }
 }

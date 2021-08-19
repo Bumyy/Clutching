@@ -1,10 +1,9 @@
 <?php
 
-namespace ClutchCore\task;
+namespace Bumy\Clutching\task;
 
-use ClutchCore\Main;
+use Bumy\Clutching\Main;
 use pocketmine\Player;
-use ClutchCore\CustomPlayer;
 use pocketmine\scheduler\Task;
 use pocketmine\math\Vector3;
 use pocketmine\block\Air;

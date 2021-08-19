@@ -1,10 +1,9 @@
 <?php
 
-namespace ClutchCore\task;
+namespace Bumy\Clutching\task;
 
-use ClutchCore\Main;
+use Bumy\Clutching\Main;
 use pocketmine\Player;
-use ClutchCore\CustomPlayer;
 use pocketmine\scheduler\Task;
 
 class HitTask extends Task{
@@ -13,7 +12,7 @@ class HitTask extends Task{
     public $player;
     public $type;
 
-    public function __construct(Main $plugin, CustomPlayer $player, $type){
+    public function __construct(Main $plugin, Player $player, $type){
         $this->plugin = $plugin;
         $this->player = $player;
         $this->type = $type;

@@ -2,7 +2,7 @@
 
 declare(strict_types = 1);
 
-namespace ClutchCore;
+namespace Bumy\Clutching;
 
 use pocketmine\plugin\PluginBase;
 use pocketmine\event\block\BlockPlaceEvent;
@@ -24,14 +24,14 @@ use pocketmine\Server;
 use pocketmine\Player;
 use pocketmine\entity\Entity;
 use pocketmine\level\Position;
+use pocketmine\level\Level;
 use pocketmine\utils\Config;
 
-use ClutchCore\CustomPlayer;
-use ClutchCore\ArenaManager;
-use ClutchCore\CustomNPC;
-use ClutchCore\task\WaitBetweenTask;
-use ClutchCore\task\DecayTask;
-
+use Bumy\Clutching\PlayerData;
+use Bumy\Clutching\ArenaManager;
+use Bumy\Clutching\entity\CustomNPC;
+use Bumy\Clutching\task\WaitBetweenTask;
+use Bumy\Clutching\task\DecayTask;
 
 class Main extends PluginBase implements Listener {
 
@@ -39,13 +39,15 @@ class Main extends PluginBase implements Listener {
 
     public $config;
 
+    public $playerData = [];
+
     public function onEnable() {
 
-        if (is_null($this->getServer()->getPluginManager()->getPlugin("FormAPI"))) {
-            $this->getLogger()->error("You need to have FormAPI installed to use this plugin!");
-            $this->getServer()->getPluginManager()->disablePlugin($this);
-            return;
-        }
+        #if (is_null($this->getServer()->getPluginManager()->getPlugin("FormAPI"))) {
+        #    $this->getLogger()->error("You need to have FormAPI installed to use this plugin!");
+        #    $this->getServer()->getPluginManager()->disablePlugin($this);
+        #    return;
+        #}
 
         $this->saveResource("DefaultMap.zip");
 
@@ -60,9 +62,6 @@ class Main extends PluginBase implements Listener {
         $this->arenaManager = new ArenaManager($this);
         Entity::registerEntity(CustomNPC::class, true);
 
-        //create task or not
-
-        #loading all worlds
         foreach(glob($this->getServer()->getDataPath() . "worlds/*") as $world) {
             $world = str_replace($this->getServer()->getDataPath() . "worlds/", "", $world);
             if($this->getServer()->isLevelLoaded($world)){
@@ -70,20 +69,6 @@ class Main extends PluginBase implements Listener {
             }
             $this->getServer()->loadLevel($world);
         }
-
-        $this->getServer()->getCommandMap()->registerAll("astral", [
-            #new commands\Test("test", $this),
-        ]);
-
-    }
-
-    /**
-     * @param PlayerCreationEvent $event
-     * @return void
-     */
-    public function onPlayerCreation(PlayerCreationEvent $event) : void{
-        $event->setPlayerClass(CustomPlayer::class);
-
     }
 
     /**
@@ -102,7 +87,7 @@ class Main extends PluginBase implements Listener {
      */
     public function onPlayerJoin(PlayerJoinEvent $event) : void{
         $player = $event->getPlayer();
-        $player->load($this);
+        $this->playerData[$player->getName()] = new PlayerData($this, $player->getName());
         $this->getArenaManager()->createGame($player);
         $this->getArenaManager()->giveItems($player, "stopped");
         $player->setGamemode(0);
@@ -117,24 +102,26 @@ class Main extends PluginBase implements Listener {
     }
 
     /**
-     * @param PlayerQuitEvent $event
+     * @param PlayerQuitEvent $event 
      * @return void
      */
     public function onPlayerLeave(PlayerQuitEvent $event) : void{
         $player = $event->getPlayer();
-        foreach($this->getServer()->getLevelByName($player->getMap()."-".$player->getName())->getPlayers() as $p){
-            $pos = new Position(100, 52, 100, $this->getServer()->getLevelByName($p->getMap()."-".$p->getName()));
-            $p->teleport($pos);
-            $p->setGamemode(0);
-            $p->setSpectating(false);
-            $p->sendMessage("§cTeleporting back to your island, because the player you were spectating has left the game!");
-            $this->getArenaManager()->giveItems($p, "stopped");
+        if($this->getServer()->getLevelByName($this->getPlayerData($player->getName())->getMap()."-".$player->getName()) instanceof Level){
+            foreach($this->getServer()->getLevelByName($this->getPlayerData($player->getName())->getMap()."-".$player->getName())->getPlayers() as $p){
+                $pos = new Position(100, 52, 100, $this->getServer()->getLevelByName($this->getPlayerData($p->getName())->getMap()."-".$p->getName()));
+                $p->teleport($pos);
+                $p->setGamemode(0);
+                $this->getPlayerData($p->getName())->setSpectating(false);
+                $p->sendMessage("§cTeleporting back to your island, because the player you were spectating has left the game!");
+                $this->getArenaManager()->giveItems($p, "stopped");
+            }
+
+            //delete game and map
+            $this->getPlayerData($player->getName())->setInGame(false);
+
+            $this->deleteMap($player, $this->getPlayerData($player->getName())->getMap());
         }
-        //delete game and map
-        $player->setInGame(false);
-
-        $this->deleteMap($player, $player->getMap());
-
     }
 
     /**
@@ -159,9 +146,9 @@ class Main extends PluginBase implements Listener {
         $name = $event->getItem()->getCustomName();
         switch($name){
             case "§r§7Start the Game":
-                $player->setInGame(true);
-                $player->hitSession++;
-                $this->getScheduler()->scheduleDelayedTask(new task\WaitBetweenTask($this, $player, $player->hitSession), mt_rand(2 * 20, 3 * 20));
+                $this->getPlayerData($player->getName())->setInGame(true);
+                $this->getPlayerData($player->getName())->hitSession++;
+                $this->getScheduler()->scheduleDelayedTask(new task\WaitBetweenTask($this, $player, $this->getPlayerData($player->getName())->hitSession), mt_rand(2 * 20, 3 * 20));
                 $player->sendMessage("§aYou started the game!");
                 $player->sendPopup("§aPrepare for the hits!");
                 $this->getArenaManager()->giveItems($player, "game");
@@ -173,7 +160,7 @@ class Main extends PluginBase implements Listener {
                 break;
 
             case "§r§7Stop the Game":
-                $player->setInGame(false);
+                $this->getPlayerData($player->getName())->setInGame(false);
                 $player->sendMessage("§cYou stopped the game!");
                 $this->getArenaManager()->giveItems($player, "stopped");
                 $pos = new Position(100, 52, 100, $player->getLevel());
@@ -200,11 +187,11 @@ class Main extends PluginBase implements Listener {
                 break;
 
             case "§r§7Go back to your island":
-                $map = $player->getMap();
+                $map = $this->getPlayerData($player->getName())->getMap();
                 $pos = new Position(100, 52, 100, $this->getServer()->getLevelByName($map."-".$player->getName()));
                 $player->teleport($pos);
                 $player->setGamemode(0);
-                $player->setSpectating(false);
+                $this->getPlayerData($player->getName())->setSpectating(false);
                 $this->getArenaManager()->giveItems($player, "stopped");
                 break;
         }
@@ -215,7 +202,7 @@ class Main extends PluginBase implements Listener {
         if($player->getY() < 40) {
             $pos = new Position(100, 52, 100, $player->getLevel());
             $player->teleport($pos);
-            if ($player->getIngame()) {
+            if ($this->getPlayerData($player->getName())->getIngame()) {
                 $this->getArenaManager()->resetMap($player);
                 $this->getArenaManager()->giveItems($player, "game");
             }elseif($player->getIngame(false)){
@@ -234,7 +221,7 @@ class Main extends PluginBase implements Listener {
         $y = $block->getY();
         $z = $block->getZ();
 
-        if ($player->getIngame(true)) {
+        if ($this->getPlayerData($player->getName())->getIngame(true)) {
             $this->getArenaManager()->getPlugin()->getScheduler()->scheduleDelayedTask(new DecayTask($player, $block, $x, $y, $z), 200);
         }
     }
@@ -243,12 +230,20 @@ class Main extends PluginBase implements Listener {
         $event->setCancelled();
     }
 
+    public function getPlayerData(string $playerName){
+        if(!isset($this->playerData[$playerName])){
+            $this->playerData[$playerName] = new PlayerData($this, $playerName);
+        }
+        return $this->playerData[$playerName];
+        
+    }
+
     /**
-     * @param CustomPlayer $player
+     * @param $player
      * @param string $folderName
      * @return void
      */
-    public function createMap(CustomPlayer $player, $folderName){
+    public function createMap($player, $folderName){
         $mapname = $folderName."-".$player->getName();
       
         $zipPath = $this->getServer()->getDataPath() . "plugin_data/ClutchCore/" .  $folderName . ".zip";
@@ -272,11 +267,11 @@ class Main extends PluginBase implements Listener {
     }
     
     /**
-     * @param CustomPlayer $player
+     * @param $player
      * @param string $folderName
      * @return void
      */            
-    public function deleteMap(CustomPlayer $player, $folderName) : void{
+    public function deleteMap($player, $folderName) : void{
         $mapName = $folderName."-".$player->getName();
         if(!$this->getServer()->isLevelGenerated($mapName)) {
             
