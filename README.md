@@ -1,8 +1,6 @@
 
 <h1>Clutching Gamemode<img src="https://github.com/Bumyy/Clutch-Core/blob/main/assets/icon.png" height="64" width="64" align="left" alt=""></h1><br>
 
-<b>A Clutching Gamemode for PocketMine-MP.</b><br>
-
 ## 😎 About the Gamemode:
 
 In Clutching you can practice your clutch skills!
