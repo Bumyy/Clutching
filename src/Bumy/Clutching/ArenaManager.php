@@ -186,7 +186,7 @@ class ArenaManager{
             foreach($this->getPlayerData($player->getName())->canSpectatePlayers as $p){
                 if($result == $p){
                     if($this->plugin->getServer()->getPlayer($p) !== null){
-                        $map = this->getPlayerData($p)->getMap();
+                        $map = $this->getPlayerData($p)->getMap();
                         $pos = new Position(100, 52, 100, $this->getPlugin()->getServer()->getLevelByName($map."-".$p));
                         $player->teleport($pos);
                         $player->setGamemode(3);
