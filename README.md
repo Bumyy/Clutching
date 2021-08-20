@@ -10,10 +10,6 @@ the platform and try to save yourself by placing blocks under you!
 
 Video about the gamemode: https://youtu.be/IkpC1S8AKCQ
 
-## ❗️ IMPORTANT
-
-- You need libFormAPI virion in your server for this plugin to work (https://poggit.pmmp.io/ci/jojoe77777/FormAPI/libFormAPI)
-
 ## ✨ Features
 
 - Drag & Drop Working Gamemode! ✔
